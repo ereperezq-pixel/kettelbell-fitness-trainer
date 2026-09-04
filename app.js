@@ -376,3 +376,66 @@ $("clearHistoryBtn").addEventListener("click",()=>{
 });
 updateSettings();
 if("serviceWorker" in navigator) window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js"));
+
+
+/* PWA update notification — shown only when a newer app version is installed */
+function setupUpdateNotice(){
+  if(!("serviceWorker" in navigator)) return;
+
+  let refreshing = false;
+  navigator.serviceWorker.addEventListener("controllerchange", ()=>{
+    if(refreshing) return;
+    refreshing = true;
+    showUpdateNotice(true);
+  });
+
+  navigator.serviceWorker.getRegistration().then(reg=>{
+    if(!reg) return;
+
+    reg.addEventListener("updatefound", ()=>{
+      const worker=reg.installing;
+      if(!worker) return;
+      worker.addEventListener("statechange", ()=>{
+        if(worker.state==="installed" && navigator.serviceWorker.controller){
+          showUpdateNotice(false);
+        }
+      });
+    });
+
+    // Check periodically while the app is open.
+    setInterval(()=>reg.update().catch(()=>{}), 60*60*1000);
+  }).catch(()=>{});
+}
+
+function showUpdateNotice(reloadNow){
+  let el=document.getElementById("update-notice");
+  if(!el){
+    el=document.createElement("div");
+    el.id="update-notice";
+    el.className="update-notice";
+    el.innerHTML=`
+      <div class="update-icon">↻</div>
+      <div class="update-copy">
+        <strong>¡Nueva actualización!</strong>
+        <span>Hay una nueva versión de Kettlebell Circuit disponible.</span>
+      </div>
+      <button type="button" id="update-now">ACTUALIZAR</button>
+      <button type="button" class="update-close" id="update-later" aria-label="Cerrar">×</button>
+    `;
+    document.body.appendChild(el);
+
+    el.querySelector("#update-later").addEventListener("click",()=>el.remove());
+    el.querySelector("#update-now").addEventListener("click",async()=>{
+      const reg=await navigator.serviceWorker.getRegistration();
+      if(reg && reg.waiting){
+        reg.waiting.postMessage({type:"SKIP_WAITING"});
+      }else{
+        location.reload();
+      }
+    });
+  }
+  el.classList.add("show");
+}
+
+
+if(document.readyState === 'loading'){document.addEventListener('DOMContentLoaded',setupUpdateNotice);}else{setupUpdateNotice();}
