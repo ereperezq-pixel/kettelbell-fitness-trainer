@@ -1,4 +1,4 @@
-# Kettlebell Circuit — V1
+# Kettlebell Circuit — V2
 
 Primera versión de la PWA de entrenamientos.
 
@@ -17,7 +17,10 @@ Primera versión de la PWA de entrenamientos.
 - PWA preparada para GitHub Pages.
 
 ## Nota sobre las imágenes
-En esta V1 las tarjetas usan ilustraciones vectoriales locales para que la aplicación funcione sin depender de servidores externos. La siguiente iteración puede sustituirlas por imágenes reales de ejercicios procedentes de fuentes web con licencia adecuada, manteniendo la misma interfaz.
+En esta V2 las tarjetas usan ilustraciones vectoriales locales para que la aplicación funcione sin depender de servidores externos. La siguiente iteración puede sustituirlas por imágenes reales de ejercicios procedentes de fuentes web con licencia adecuada, manteniendo la misma interfaz.
 
 ## GitHub Pages
 Sube los archivos al repositorio y activa GitHub Pages desde Settings → Pages → Deploy from branch.
+
+
+V2: biblioteca de ejercicios renovada con ilustraciones vectoriales específicas para cada uno de los 20 movimientos, sin dependencias externas de imágenes.

@@ -71,18 +71,104 @@ $("homeBtn").addEventListener("click",()=>{
 $("backBtn").addEventListener("click",()=>showScreen("config"));
 
 function artSvg(type){
-  const kettlebell = `<path d="M68 58c0-16 24-16 24 0" fill="none" stroke="#ddd" stroke-width="6" stroke-linecap="round"/><circle cx="80" cy="78" r="17" fill="#b82d4d"/><path d="M70 77h20" stroke="#6b0e24" stroke-width="3"/>`;
-  const head = `<circle cx="79" cy="34" r="7" fill="#eee"/>`;
-  const stick = (body="M79 42L79 75", arms="M79 49L55 61M79 49L103 61", legs="M79 75L63 105M79 75L96 105") => `${head}<path d="${body}" stroke="#eee" stroke-width="5" stroke-linecap="round" fill="none"/><path d="${arms}" stroke="#eee" stroke-width="5" stroke-linecap="round"/><path d="${legs}" stroke="#eee" stroke-width="5" stroke-linecap="round"/>`;
-  let body=stick();
-  if(type==="swing") body=`${head}<path d="M79 42L67 70L78 91" stroke="#eee" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M68 53L55 72M68 53L91 72" stroke="#eee" stroke-width="5" stroke-linecap="round"/>${kettlebell}<path d="M78 91L58 108M78 91L96 108" stroke="#eee" stroke-width="5" stroke-linecap="round"/>`;
-  if(type==="squat"||type==="frontsquat") body=`${head}<path d="M79 42L79 70L61 87M79 70L97 87" stroke="#eee" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M79 50L61 53M79 50L97 53" stroke="#eee" stroke-width="5" stroke-linecap="round"/>${kettlebell}<path d="M61 87L53 108M97 87L105 108" stroke="#eee" stroke-width="5" stroke-linecap="round"/>`;
-  if(type==="pushup"||type==="drag") body=`${head}<path d="M44 79L84 72L112 90" stroke="#eee" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M57 77L48 101M101 83L108 106" stroke="#eee" stroke-width="5" stroke-linecap="round"/>${type==="drag"?kettlebell:""}`;
-  if(type==="plank"||type==="tap") body=`${head}<path d="M42 80L88 75L112 91" stroke="#eee" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M53 78L47 104M100 83L105 106" stroke="#eee" stroke-width="5" stroke-linecap="round"/>`;
-  if(type==="twist"||type==="situp"||type==="legpass") body=`${head}<path d="M79 42L64 67L90 79" stroke="#eee" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M64 67L43 91M90 79L111 94" stroke="#eee" stroke-width="5" stroke-linecap="round"/>${kettlebell}`;
-  if(["clean","press","snatch","highpull","halo"].includes(type)) body=`${stick()}${kettlebell}`;
-  return `<svg viewBox="0 0 160 130" width="100%" height="100%" aria-hidden="true"><g transform="translate(0,-4)">${body}</g></svg>`;
+  const W=220,H=160;
+  const C="#f7f2f0", A="#b52b4a", D="#171416", M="#7f2639";
+  const base=`<svg class="exercise-art" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${type}">
+    <defs>
+      <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#25191d"/>
+        <stop offset="1" stop-color="#111012"/>
+      </linearGradient>
+    </defs>
+    <rect width="${W}" height="${H}" rx="18" fill="url(#bg)"/>
+    <path d="M18 132H202" stroke="#4d3940" stroke-width="2"/>
+    <g stroke="${C}" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none">
+  `;
+  const head=(x,y)=>`<circle cx="${x}" cy="${y}" r="9" fill="${C}" stroke="none"/>`;
+  const body=(x1,y1,x2,y2)=>`<path d="M${x1} ${y1} L${x2} ${y2}"/>`;
+  const line=(x1,y1,x2,y2,w=6)=>`<path d="M${x1} ${y1} L${x2} ${y2}" stroke-width="${w}"/>`;
+  const kb=(x,y,s=1)=>`<g transform="translate(${x} ${y}) scale(${s})">
+      <path d="M-12 0 Q-12 -15 0 -15 Q12 -15 12 0" stroke="${A}" stroke-width="5" fill="none"/>
+      <path d="M-13 0 Q0 10 13 0 L10 18 Q0 25 -10 18 Z" fill="${A}" stroke="${A}" stroke-width="2"/>
+      <circle cx="0" cy="8" r="3" fill="${C}" stroke="none"/>
+    </g>`;
+  const arrow=(d)=>`<path d="${d}" stroke="${A}" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M0 0" />`;
+  let p="";
+
+  switch(type){
+    case "swing":
+      p=head(92,48)+body(92,60,120,86)+line(93,67,69,88)+line(94,69,76,99)+line(119,85,95,119)+line(119,85,145,112)+line(145,112,159,129)+line(95,119,91,132)+line(92,67,116,91)+line(92,67,116,91)+kb(128,100,.85)+arrow("M150 80 Q182 72 180 105");
+      break;
+    case "goblet":
+      p=head(104,34)+body(104,46,104,84)+line(104,55,82,72)+line(104,55,126,72)+line(82,72,101,76)+line(126,72,107,76)+line(104,84,79,105)+line(79,105,68,130)+line(104,84,130,105)+line(130,105,141,130)+kb(104,74,.9);
+      break;
+    case "clean":
+      p=head(105,34)+body(105,46,105,84)+line(105,55,82,73)+line(105,55,128,66)+line(82,73,72,98)+line(128,66,133,77)+line(105,84,82,109)+line(82,109,77,131)+line(105,84,128,108)+line(128,108,134,131)+kb(138,72,.72)+arrow("M70 103 Q61 76 82 62");
+      break;
+    case "press":
+      p=head(104,36)+body(104,48,104,84)+line(104,58,83,74)+line(104,58,126,72)+line(83,74,77,89)+line(126,72,128,53)+line(128,53,130,31)+line(104,84,84,109)+line(84,109,80,131)+line(104,84,126,109)+line(126,109,130,131)+kb(132,24,.7);
+      break;
+    case "snatch":
+      p=head(105,37)+body(105,49,105,84)+line(105,59,84,77)+line(105,59,126,54)+line(84,77,76,96)+line(126,54,137,31)+line(137,31,144,18)+line(105,84,82,108)+line(82,108,78,131)+line(105,84,128,108)+line(128,108,133,131)+kb(145,15,.65)+arrow("M73 101 Q64 59 103 26");
+      break;
+    case "tgu":
+      p=head(57,104)+body(68,103,101,103)+line(78,103,76,83)+line(76,83,91,67)+line(91,67,109,57)+line(109,57,119,39)+line(101,103,112,84)+line(112,84,125,74)+line(125,74,139,58)+kb(119,33,.62)+arrow("M51 120 Q73 133 94 124");
+      break;
+    case "deadlift":
+      p=head(93,45)+body(93,57,119,81)+line(95,65,72,88)+line(95,65,119,92)+line(119,81,101,112)+line(101,112,95,130)+line(119,81,139,109)+line(139,109,148,130)+line(72,88,83,100)+line(119,92,133,99)+kb(94,106,.75);
+      break;
+    case "lunge":
+      p=head(103,35)+body(103,47,103,83)+line(103,57,82,73)+line(103,57,126,72)+line(82,73,73,93)+line(126,72,134,91)+line(103,83,77,108)+line(77,108,58,130)+line(103,83,132,99)+line(132,99,157,130)+kb(106,75,.7);
+      break;
+    case "front_squat":
+      p=head(104,34)+body(104,46,104,84)+line(104,56,82,66)+line(104,56,126,66)+line(82,66,92,73)+line(126,66,116,73)+line(104,84,78,103)+line(78,103,68,130)+line(104,84,130,103)+line(130,103,140,130)+kb(104,71,.78);
+      break;
+    case "high_pull":
+      p=head(105,35)+body(105,47,105,83)+line(105,57,82,76)+line(105,57,128,73)+line(82,76,73,94)+line(128,73,135,52)+line(105,83,82,108)+line(82,108,77,130)+line(105,83,129,108)+line(129,108,134,130)+kb(134,45,.72)+arrow("M133 80 Q146 57 135 40");
+      break;
+    case "halo":
+      p=head(105,35)+body(105,47,105,84)+line(105,58,83,68)+line(105,58,127,68)+line(83,68,91,54)+line(127,68,119,54)+line(91,54,103,22)+line(119,54,103,22)+line(105,84,82,108)+line(82,108,77,130)+line(105,84,128,108)+line(128,108,133,130)+kb(103,21,.68)+arrow("M77 48 Q105 5 137 47");
+      break;
+    case "russian_twist":
+      p=head(91,65)+body(97,76,116,94)+line(101,78,78,87)+line(101,78,126,84)+line(116,94,94,111)+line(94,111,77,128)+line(116,94,139,111)+line(139,111,157,128)+line(78,87,94,88)+line(126,84,105,89)+kb(100,88,.65)+arrow("M66 73 Q55 97 74 114");
+      break;
+    case "situp":
+      p=head(54,101)+body(63,100,94,82)+line(72,95,91,109)+line(94,82,119,94)+line(119,94,141,112)+line(141,112,161,128)+line(94,82,108,62)+line(108,62,120,52)+kb(126,49,.62)+arrow("M49 87 Q74 55 105 59");
+      break;
+    case "leg_pass":
+      p=head(73,54)+body(84,65,111,92)+line(88,69,67,82)+line(88,69,108,76)+line(111,92,144,100)+line(144,100,171,91)+line(111,92,132,112)+line(132,112,153,128)+line(67,82,57,101)+kb(113,91,.65)+arrow("M148 76 Q169 65 176 82");
+      break;
+    case "pushup":
+      p=head(55,76)+body(64,80,102,91)+line(76,84,53,103)+line(53,103,35,128)+line(102,91,125,108)+line(125,108,147,128)+line(102,91,126,84)+line(126,84,146,82)+arrow("M75 64 L124 64");
+      break;
+    case "push_drag":
+      p=head(55,76)+body(64,80,103,91)+line(76,84,54,103)+line(54,103,35,128)+line(103,91,125,108)+line(125,108,147,128)+line(102,91,128,82)+line(128,82,148,82)+kb(132,88,.55)+arrow("M126 70 L151 70");
+      break;
+    case "plank":
+      p=head(53,76)+body(63,80,103,91)+line(76,84,55,105)+line(55,105,36,128)+line(103,91,126,108)+line(126,108,148,128)+arrow("M70 65 L142 65");
+      break;
+    case "shoulder_tap":
+      p=head(53,76)+body(63,80,103,91)+line(76,84,55,105)+line(55,105,36,128)+line(103,91,126,108)+line(126,108,148,128)+line(88,87,98,70)+line(98,70,106,64)+arrow("M99 61 Q112 50 124 61");
+      break;
+    case "mountain":
+      p=head(53,76)+body(63,80,103,91)+line(76,84,55,105)+line(55,105,36,128)+line(103,91,126,108)+line(126,108,148,128)+line(88,88,72,109)+line(72,109,83,123)+line(103,91,118,105)+arrow("M84 121 Q96 133 109 121");
+      break;
+    case "bear_crawl":
+      p=head(59,69)+body(68,75,104,91)+line(76,80,57,102)+line(57,102,42,121)+line(104,91,126,104)+line(126,104,143,122)+line(88,84,99,104)+line(99,104,113,121)+arrow("M37 62 Q76 48 118 62");
+      break;
+    default:
+      p=head(105,35)+body(105,47,105,84)+line(105,58,82,75)+line(105,58,128,75)+line(105,84,82,108)+line(82,108,77,130)+line(105,84,128,108)+line(128,108,133,130);
+  }
+  return base+p+`</g></svg>`;
 }
+
+function exerciseCategory(type){
+  if(["swing","goblet","clean","press","snatch","tgu","deadlift","lunge","front_squat","high_pull","halo"].includes(type)) return "KETTLEBELL";
+  if(["russian_twist","situp","leg_pass"].includes(type)) return "ABDOMINALES";
+  if(["pushup","push_drag"].includes(type)) return "FLEXIONES";
+  return "CORE";
+}
+
 function renderExercises(){
   $("exerciseGrid").innerHTML=EXERCISES.map((e,i)=>`
     <button class="exercise-card ${state.selected.includes(i)?"selected":""}" data-i="${i}">

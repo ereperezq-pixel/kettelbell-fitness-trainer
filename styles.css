@@ -22,3 +22,57 @@ button{font:inherit}.primary,.secondary,.danger{border:0;border-radius:17px;min-
 
 @media(min-width:650px){main{padding:30px}.exercise-grid{grid-template-columns:repeat(3,1fr)}.art{height:145px}.timer{font-size:132px}}
 @media(max-width:420px){.hero h1{font-size:39px}.timer{font-size:91px}.workout-exercise h2{font-size:18px}}
+
+
+/* V2 — visual upgrade for exercise library */
+.exercise-card{
+  position:relative;
+  overflow:hidden;
+  border:1px solid rgba(181,43,74,.28);
+  background:
+    radial-gradient(circle at 85% 15%, rgba(181,43,74,.16), transparent 38%),
+    linear-gradient(145deg,#21191c,#111012);
+  transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+.exercise-card:hover{
+  transform:translateY(-3px);
+  border-color:rgba(181,43,74,.72);
+  box-shadow:0 14px 32px rgba(0,0,0,.28);
+}
+.exercise-card.selected{
+  border-color:#b52b4a;
+  box-shadow:0 0 0 2px rgba(181,43,74,.22), 0 14px 32px rgba(0,0,0,.3);
+}
+.exercise-art-wrap{
+  position:relative;
+  margin:-1px -1px 12px;
+  overflow:hidden;
+}
+.exercise-art{
+  display:block;
+  width:100%;
+  height:auto;
+  min-height:155px;
+}
+.exercise-category{
+  position:absolute;
+  left:12px;
+  top:12px;
+  padding:5px 8px;
+  border-radius:999px;
+  background:rgba(12,10,11,.78);
+  border:1px solid rgba(255,255,255,.12);
+  color:#f7f2f0;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.12em;
+  backdrop-filter:blur(5px);
+}
+.exercise-card h3{
+  margin-top:4px;
+  letter-spacing:-.01em;
+}
+@media (max-width:640px){
+  .exercise-art{min-height:140px}
+  .exercise-category{font-size:8px}
+}
