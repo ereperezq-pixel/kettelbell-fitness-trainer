@@ -26,5 +26,8 @@ Sube los archivos al repositorio y activa GitHub Pages desde Settings → Pages 
 V2: biblioteca de ejercicios renovada con ilustraciones vectoriales específicas para cada uno de los 20 movimientos, sin dependencias externas de imágenes.
 
 
-### V3 — imágenes de ejercicios
+### V4 — imágenes de ejercicios
 La biblioteca visual usa fotografías/recursos de licencia abierta enlazados desde sus fuentes originales (principalmente Wikimedia Commons). La app muestra una pequeña atribución en cada tarjeta. Algunos movimientos muy específicos no tienen una fotografía abierta exacta fácilmente reutilizable; en esos casos se usa una imagen de referencia de movimiento cercano y se mantiene indicada la procedencia.
+
+
+V4: tratamiento visual unificado de las fotografías, numeración, categorías, sombreado burdeos/negro y guía visual del sentido del movimiento.

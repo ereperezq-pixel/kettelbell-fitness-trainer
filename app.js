@@ -219,11 +219,44 @@ const IMAGE_SOURCES = {
   bear_crawl: "U.S. Marine Corps / Wikimedia Commons · Public Domain"
 };
 
+
+function movementGuide(type){
+  const arrows = {
+    swing:"M8 22 Q28 4 48 22 M48 22 l-7 -2 M48 22 l-2 -7",
+    goblet:"M28 5 L28 42 M28 42 l-5 -7 M28 42 l5 -7",
+    clean:"M12 38 Q24 10 40 20 M40 20 l-7 -1 M40 20 l-3 -6",
+    press:"M28 42 L28 7 M28 7 l-5 7 M28 7 l5 7",
+    snatch:"M12 40 Q22 8 39 6 M39 6 l-8 1 M39 6 l-2 7",
+    tgu:"M10 38 Q18 12 40 12 M40 12 l-7 -3 M40 12 l-3 6",
+    deadlift:"M10 12 Q28 32 46 12 M46 12 l-7 0 M46 12 l-3 6",
+    lunge:"M12 8 L39 38 M39 38 l-8 -2 M39 38 l-2 -8",
+    front_squat:"M28 6 L28 42 M28 42 l-5 -7 M28 42 l5 -7",
+    high_pull:"M12 40 Q24 8 39 20 M39 20 l-7 -1 M39 20 l-3 -6",
+    halo:"M9 27 Q28 2 47 27 M47 27 l-7 -2 M47 27 l-2 -7",
+    russian_twist:"M9 13 Q28 35 47 13 M9 13 l6 0 M47 13 l-6 0",
+    situp:"M10 38 Q18 8 42 12 M42 12 l-6 -3 M42 12 l-2 6",
+    leg_pass:"M9 30 Q28 6 47 30 M47 30 l-7 -1 M47 30 l-2 -7",
+    pushup:"M8 25 L48 25 M48 25 l-7 -4 M48 25 l-7 4",
+    push_drag:"M10 34 Q28 10 46 34 M46 34 l-7 -1 M46 34 l-2 -7",
+    plank:"M8 25 L48 25 M48 25 l-7 -4 M48 25 l-7 4",
+    shoulder_tap:"M12 36 Q28 5 44 36 M44 36 l-7 -1 M44 36 l-2 -7",
+    mountain:"M8 35 L28 12 L48 35 M48 35 l-7 -1 M48 35 l-2 -7",
+    bear_crawl:"M8 30 L48 30 M48 30 l-7 -4 M48 30 l-7 4"
+  };
+  return `<span class="movement-guide" aria-hidden="true"><svg viewBox="0 0 56 48" xmlns="http://www.w3.org/2000/svg"><path d="${arrows[type]||arrows.plank}"/></svg></span>`;
+}
+
 function exerciseImage(type){
   const src = EXERCISE_IMAGES[type];
+  const idx = EXERCISES.findIndex(e => e[2] === type);
+  const num = idx >= 0 ? String(idx + 1).padStart(2,"0") : "";
   return `<div class="photo-frame">
     <img src="${src}" alt="" loading="lazy" referrerpolicy="no-referrer"
       onerror="this.closest('.photo-frame').classList.add('image-failed');this.style.display='none';">
+    <div class="photo-shade"></div>
+    <span class="photo-number">${num}</span>
+    <span class="photo-category">${exerciseCategory(type)}</span>
+    ${movementGuide(type)}
     <span class="photo-credit">${IMAGE_SOURCES[type] || "Imagen de licencia abierta"}</span>
   </div>`;
 }
