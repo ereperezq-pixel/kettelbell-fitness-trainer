@@ -169,10 +169,69 @@ function exerciseCategory(type){
   return "CORE";
 }
 
+
+const commonsImg = (file) =>
+  "https://commons.wikimedia.org/wiki/Special:Redirect/file/" + encodeURIComponent(file);
+
+const EXERCISE_IMAGES = {
+  swing: commonsImg("Kettlebell swing with arms fully extended.jpg"),
+  goblet: "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c3/Kettlebell_Goblet_Squat.webm/500px--Kettlebell_Goblet_Squat.webm.jpg",
+  clean: commonsImg("Kettlebell Clean and Jerk 12 Rack Transition.jpg"),
+  press: commonsImg('AB 201 honors fallen EOD members with memorial workout (8259417).jpg'),
+  snatch: commonsImg("Kettlebell Half Snatch 11 Lockout - Fixation.jpg"),
+  tgu: commonsImg("Turkish Get Up.jpg"),
+  deadlift: commonsImg("Deadlift.JPG"),
+  lunge: commonsImg("Girl doing lunges.jpg"),
+  front_squat: commonsImg("Kettlebell Front Squat 4 Full.jpg"),
+  high_pull: commonsImg("Kettlebell Clean and Jerk 8 Up-swing.jpg"),
+  halo: "https://exercise-dataset.com/images/flat/kettlebell-halo-start.webp",
+  russian_twist: commonsImg("Football strength image.jpg"),
+  situp: commonsImg("Sit-up with weight.jpg"),
+  leg_pass: commonsImg("Kettlebell truebalance romeike.jpg"),
+  pushup: commonsImg("Push-up.jpg"),
+  push_drag: commonsImg("Push up (PSF).png"),
+  plank: commonsImg("Plank.jpg"),
+  shoulder_tap: commonsImg('10th AAMDC host “Key Leader Physical Readiness Training” (8448512).jpg'),
+  mountain: commonsImg('Airmen perform "mountain climbers".jpg'),
+  bear_crawl: commonsImg("Weapons Co. conducts physical training 150326-M-PJ210-084.jpg")
+};
+
+const IMAGE_SOURCES = {
+  swing: "Wikimedia Commons · CC BY-SA 4.0",
+  goblet: "Wikimedia Commons · CC BY-SA 4.0",
+  clean: "Wikimedia Commons · CC BY-SA 4.0",
+  press: "U.S. Air Force / Wikimedia Commons · Public Domain",
+  snatch: "Wikimedia Commons · CC BY-SA 4.0",
+  tgu: "Wikimedia Commons · CC BY-SA 4.0",
+  deadlift: "Wikimedia Commons · licencia indicada en Commons",
+  lunge: "Wikimedia Commons · licencia indicada en Commons",
+  front_squat: "Wikimedia Commons · CC BY-SA 4.0",
+  high_pull: "Wikimedia Commons · CC BY-SA 4.0",
+  halo: "RepDB · uso en app con atribución",
+  russian_twist: "Wikimedia Commons · CC0 1.0",
+  situp: "Wikimedia Commons · CC BY 2.0",
+  leg_pass: "Wikimedia Commons · licencia indicada en Commons",
+  pushup: "Wikimedia Commons · CC BY-SA 4.0",
+  push_drag: "Wikimedia Commons · Public Domain",
+  plank: "Wikimedia Commons · CC BY-SA 3.0",
+  shoulder_tap: "U.S. Army / Wikimedia Commons · Public Domain",
+  mountain: "U.S. Air Force / Wikimedia Commons · Public Domain",
+  bear_crawl: "U.S. Marine Corps / Wikimedia Commons · Public Domain"
+};
+
+function exerciseImage(type){
+  const src = EXERCISE_IMAGES[type];
+  return `<div class="photo-frame">
+    <img src="${src}" alt="" loading="lazy" referrerpolicy="no-referrer"
+      onerror="this.closest('.photo-frame').classList.add('image-failed');this.style.display='none';">
+    <span class="photo-credit">${IMAGE_SOURCES[type] || "Imagen de licencia abierta"}</span>
+  </div>`;
+}
+
 function renderExercises(){
   $("exerciseGrid").innerHTML=EXERCISES.map((e,i)=>`
     <button class="exercise-card ${state.selected.includes(i)?"selected":""}" data-i="${i}">
-      <div class="art">${artSvg(e[2])}</div>
+      <div class="art">${exerciseImage(e[2])}</div>
       <div class="exercise-info"><strong>${e[0]}</strong><small>${e[1]}</small></div>
     </button>`).join("");
   document.querySelectorAll(".exercise-card").forEach(card=>card.addEventListener("click",()=>{
